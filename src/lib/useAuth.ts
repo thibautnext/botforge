@@ -6,6 +6,7 @@ interface User {
   id: string
   email: string
   name: string
+  is_pro: boolean
 }
 
 const TOKEN_KEY = 'botforge_token'

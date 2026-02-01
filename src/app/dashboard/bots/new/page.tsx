@@ -130,7 +130,11 @@ export default function NewBot() {
 
       if (!res.ok) {
         const data = await res.json()
-        throw new Error(data.error || 'Erreur de création')
+        if (data.error === 'UPGRADE_REQUIRED') {
+          router.push('/dashboard?upgrade=true')
+          return
+        }
+        throw new Error(data.message || data.error || 'Erreur de création')
       }
 
       const bot = await res.json()

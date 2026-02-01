@@ -33,25 +33,26 @@ const plans = [
     features: [
       '1 chatbot',
       'Templates de base',
-      'Conversations illimitées',
+      'Déploiement Telegram',
       'Support par email'
     ],
     cta: 'Commencer gratuitement',
+    href: '/auth/signin',
     featured: false
   },
   {
     name: 'Pro',
-    price: '15€',
+    price: '$9.99',
     period: 'par mois',
     features: [
-      '5 chatbots',
+      'Chatbots illimités',
       'Tous les templates',
       'Personnalisation avancée',
-      'Intégrations webhook',
       'Analytics détaillées',
       'Support prioritaire'
     ],
-    cta: 'Essayer 14 jours gratuits',
+    cta: 'Passer Pro',
+    href: '/auth/signin',
     featured: true
   },
   {
@@ -59,14 +60,14 @@ const plans = [
     price: '39€',
     period: 'par mois',
     features: [
-      'Chatbots illimités',
-      'Templates personnalisés',
+      'Tout dans Pro',
       'API complète',
       'Marque blanche',
       'Support téléphonique',
       'Formation personnalisée'
     ],
     cta: 'Contactez-nous',
+    href: '/auth/signin',
     featured: false
   }
 ]
@@ -257,7 +258,7 @@ export default function Home() {
                 </ul>
                 
                 <Link
-                  href="/dashboard"
+                  href={plan.href}
                   className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
                     plan.featured
                       ? 'bg-white text-blue-600 hover:bg-gray-100'

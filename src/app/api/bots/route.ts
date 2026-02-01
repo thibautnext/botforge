@@ -30,6 +30,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Nom et template requis' }, { status: 400 })
     }
 
+    // Check bot limit for free users
+    const dbUser = await postgrest('botforge_users', {
+      query: `id=eq.${user.sub}&select=is_pro`,
+      single: true,
+    }).catch(() => ({ is_pro: false }))
+
+    if (!dbUser.is_pro) {
+      const existingBots = await postgrest('botforge_bots', {
+        query: `user_id=eq.${user.sub}&select=id`,
+      })
+      if (existingBots && existingBots.length >= 1) {
+        return NextResponse.json(
+          { error: 'UPGRADE_REQUIRED', message: 'Les utilisateurs gratuits sont limités à 1 bot. Passez en Pro pour en créer plus !' },
+          { status: 403 }
+        )
+      }
+    }
+
     const [bot] = await postgrest('botforge_bots', {
       method: 'POST',
       body: {

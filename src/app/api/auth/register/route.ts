@@ -34,10 +34,11 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       token,
-      user: { id: user.id, email: user.email, name: user.name },
+      user: { id: user.id, email: user.email, name: user.name, is_pro: false },
     })
   } catch (error: unknown) {
-    console.error('Register error:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    const msg = error instanceof Error ? error.message : String(error)
+    console.error('Register error:', msg)
+    return NextResponse.json({ error: 'Erreur serveur', details: msg }, { status: 500 })
   }
 }

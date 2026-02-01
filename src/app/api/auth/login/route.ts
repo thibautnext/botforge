@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const users = await postgrest('botforge_users', {
-      query: `email=eq.${encodeURIComponent(email)}&select=id,email,name,password_hash`,
+      query: `email=eq.${encodeURIComponent(email)}&select=id,email,name,password_hash,is_pro`,
     })
 
     if (!users || users.length === 0) {
@@ -29,10 +29,11 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       token,
-      user: { id: user.id, email: user.email, name: user.name },
+      user: { id: user.id, email: user.email, name: user.name, is_pro: user.is_pro || false },
     })
   } catch (error: unknown) {
-    console.error('Login error:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    const msg = error instanceof Error ? error.message : String(error)
+    console.error('Login error:', msg)
+    return NextResponse.json({ error: 'Erreur serveur', details: msg }, { status: 500 })
   }
 }
